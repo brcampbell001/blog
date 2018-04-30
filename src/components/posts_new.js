@@ -7,6 +7,7 @@ class PostsNew extends Component {
       <div className="form-group">
         <label>{field.label}</label>
         <input className="form-control" type="text" {...field.input} />
+        {field.meta.error}
       </div>
     );
   }
@@ -14,14 +15,46 @@ class PostsNew extends Component {
   render() {
     return (
       <form>
-        <Field label="Title For Posts" name="title" component={this.renderField} />
-        <Field label="Post Tags" name="tags" component={this.renderField} />
-        <Field label="Post Content" name="content" component={this.renderField} />
+        <Field
+          label="Title For Posts"
+          name="title"
+          component={this.renderField}
+        />
+        <Field
+          label="Post Categories"
+          name="categories"
+          component={this.renderField}
+        />
+        <Field
+          label="Post Content"
+          name="content"
+          component={this.renderField}
+        />
       </form>
     );
   }
 }
 
+function validate(values) {
+  const errors = {};
+
+  // Validate the inputs from 'values'
+  if (!values.title) {
+    errors.title = "Enter a title";
+  }
+  if (!values.categories) {
+    errors.title = "Enter categories";
+  }
+  if (!values.content) {
+    errors.title = "Enter content";
+  }
+
+  // If errors is emplty, the form is fine to submit
+  // If errors has *any* properties, redux form assumes form is invalid
+  return errors;
+}
+
 export default reduxForm({
+  validate,
   form: "PostsNewForm"
 })(PostsNew);
